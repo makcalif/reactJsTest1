@@ -19,3 +19,11 @@ body {
 *:after {
   box-sizing: inherit;
 }
+
+.flight-cell {
+	display: inline-block;
+}
+
+.search-box-flights {
+	width: 80%;
+}

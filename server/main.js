@@ -3,9 +3,10 @@ const path = require('path')
 const webpack = require('webpack')
 const logger = require('../build/lib/logger')
 const webpackConfig = require('../build/webpack.config')
+const bodyParser = require('body-parser')
 const project = require('../project.config')
 const compress = require('compression')
-const flightsData = require('./flightsData');
+const flightsData = require('./flightsData'); 
 
 const app = express()
 app.use(compress())
@@ -40,12 +41,30 @@ if (project.env === 'development') {
   // (ignoring file requests). If you want to implement universal
   // rendering, you'll want to remove this middleware.
  
+  app.use(bodyParser.json())
 
   app.get('/api/insurance', function (req, res) { 
     res.json({type: 'group', price: 100, terms_url: 'http://www.united-insurers/travel/planA/terms'});
   }) 
-   app.get('/api/flights', function (req, res) { 
+  app.get('/api/flights', function (req, res) { 
     res.json(flightsData.flightsJson);
+  }) 
+  app.post('/api/booking', function (req, res) { 
+    let booking = 
+    flightsData.flightsJson.filter( (option) => {
+      if (option.id == req.body.id) {
+         return option;
+      }
+    } )
+
+    // res.json({
+    //   "bookingRefNo": "ASDBDF",
+    //   "origin": "ORD",
+    //   "destination": "DFW",
+    //   "airline": "United",
+    //   "price": 159
+    // });
+    res.send(booking[0]);
   }) 
   app.use('*', function (req, res, next) {
     const filename = path.join(compiler.outputPath, 'index.html')

@@ -1,1 +1,11 @@
 https://github.com/davezuko/react-redux-starter-kit
+
+
+build:
+yarn install
+
+run:
+yarn start
+
+for running tests: 
+yarn test:watch
